@@ -83,7 +83,6 @@ app.get('/articles/:titre', async (req, res) => {
         }
     }
 });
-// Ajouter cette route dans votre fichier serveur
 app.get('/articles-details', async (req, res) => {
     let conn;
     try {
