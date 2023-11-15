@@ -1,7 +1,39 @@
-import React from "react";
 import "./Log.css";
+import React, { useState } from 'react';
 
 export default function CreationPage() {
+  const [prenom, setPrenom] = useState("");
+  const [nom, setNom] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleCreateAccount = async () => {
+    const user = {
+      prenom: prenom,
+      nom: nom,
+      email: email,
+      password: password,
+    };
+
+    try {
+      const response = await fetch("http://localhost:3001/utilisateurs", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      });
+
+      if (response.ok) {
+        console.log("Utilisateur créé avec succès !");
+      } else {
+        console.error("Échec de la création de l'utilisateur");
+      }
+    } catch (error) {
+      console.error("Erreur lors de la création de l'utilisateur :", error);
+    }
+  };
+
   return (
     <div className="form">
       <h2>Création de compte</h2>
@@ -13,6 +45,8 @@ export default function CreationPage() {
             className="input"
             name="firstname"
             placeholder="Enter your First Name"
+            value={prenom}
+            onChange={(e) => setPrenom(e.target.value)}
           />
         </div>
       </div>
@@ -24,6 +58,8 @@ export default function CreationPage() {
             className="input"
             name="lastname"
             placeholder="Enter your Last Name"
+            value={nom}
+            onChange={(e) => setNom(e.target.value)}
           />
         </div>
       </div>
@@ -35,6 +71,8 @@ export default function CreationPage() {
             className="input"
             name="email"
             placeholder="Enter your Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
       </div>
@@ -46,10 +84,12 @@ export default function CreationPage() {
             className="input"
             name="password"
             placeholder="Enter your Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
         </div>
       </div>
-      <button className="button-submit">Créer un compte</button>
+      <button className="button-submit" onClick={handleCreateAccount}>Créer un compte</button>
     </div>
   );
 }
