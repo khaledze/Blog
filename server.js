@@ -33,7 +33,7 @@ app.get('/articles', async (req, res) => {
         }
     }
 });
-app.get('/articles/:id', async (req, res) => {
+app.get('/articles/id/:id', async (req, res) => {
     let conn;
     try {
         console.log("Lancement de la requête");
@@ -58,7 +58,7 @@ app.get('/articles/:id', async (req, res) => {
         }
     }
 });
-app.get('/articles/:titre', async (req, res) => {
+app.get('/articles/titre/:titre', async (req, res) => {
     let conn;
     try {
         console.log("Lancement de la requête");
@@ -88,7 +88,8 @@ app.get('/articles-details', async (req, res) => {
     try {
       conn = await pool.getConnection();
   
-      const rows = await conn.query("SELECT titre, contenu, date_creation FROM article");
+      
+      const rows = await conn.query("SELECT id, titre, contenu, date_creation FROM article");
   
       res.status(200).json(rows);
     } catch (err) {
@@ -99,7 +100,31 @@ app.get('/articles-details', async (req, res) => {
         conn.release();
       }
     }
-  });
+});
+
+app.get('/articles-details/:id', async (req, res) => {
+    let conn;
+    try {
+        conn = await pool.getConnection();
+
+        const articleId = req.params.id;
+
+        const rows = await conn.query("SELECT * FROM article WHERE id = ?", [articleId]);
+
+        if (rows.length === 0) {
+            res.status(404).json({ error: "Article non trouvé" });
+        } else {
+            res.status(200).json(rows[0]);
+        }
+    } catch (err) {
+        console.error("Erreur lors de la récupération de l'article :", err);
+        res.status(500).json({ error: "Erreur interne du serveur", details: err.message });
+    } finally {
+        if (conn) {
+            conn.release();
+        }
+    }
+});
   
 
 app.get('/utilisateurs', async (req, res) => {
