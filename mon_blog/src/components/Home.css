@@ -68,4 +68,22 @@
   .nav-option:hover .info {
     display: block;
   }
+
+  .articles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
   
+  .article-card {
+    border: 1px solid #ccc;
+    border-radius: 1rem;
+    padding: 1rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .article-card:hover,
+  .article-card.expanded {
+    transform: scale(1.05);
+  }

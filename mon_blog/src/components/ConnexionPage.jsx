@@ -60,7 +60,7 @@ export default function ConnexionPage() {
         </div>
       </div>
       
-      <button className="button-submit">Sign In</button>
+      <button className="button-submit" onClick={handleSignIn}>Sign In</button>
       <p className="p">
           Don't have an account? <Link to="/creation"><span className="span">Sign Up</span></Link>
         </p>
