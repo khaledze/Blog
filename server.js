@@ -83,7 +83,25 @@ app.get('/articles/:titre', async (req, res) => {
         }
     }
 });
-
+// Ajouter cette route dans votre fichier serveur
+app.get('/articles-details', async (req, res) => {
+    let conn;
+    try {
+      conn = await pool.getConnection();
+  
+      const rows = await conn.query("SELECT titre, contenu, date_creation FROM article");
+  
+      res.status(200).json(rows);
+    } catch (err) {
+      console.error("Erreur lors de la récupération des détails des articles :", err);
+      res.status(500).send("Erreur interne du serveur");
+    } finally {
+      if (conn) {
+        conn.release();
+      }
+    }
+  });
+  
 
 app.get('/utilisateurs', async (req, res) => {
     let conn;
@@ -138,7 +156,6 @@ app.post('/utilisateurs', async (req, res) => {
     try {
         const conn = await pool.getConnection();
 
-        // Vérification si l'e-mail existe déjà
         const existingUser = await conn.query("SELECT id FROM utilisateur WHERE email = ?", [email]);
 
         if (existingUser.length > 0) {
