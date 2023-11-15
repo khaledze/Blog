@@ -35,6 +35,7 @@ export default function CreationPage() {
   };
 
   return (
+    <div className="login-page">
     <div className="form">
       <h2>Création de compte</h2>
       <div className="flex-column">
@@ -90,6 +91,7 @@ export default function CreationPage() {
         </div>
       </div>
       <button className="button-submit" onClick={handleCreateAccount}>Créer un compte</button>
+    </div>
     </div>
   );
 }

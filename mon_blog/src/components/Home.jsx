@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 export default function Home() {
   return (
-    <div>
+    <div className="home-container">
       <header className="header">
         <img src={headerImage} alt="Header" className="header-image" />
         <div className="nav-options">
