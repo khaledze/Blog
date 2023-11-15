@@ -1,7 +1,9 @@
 import "./Log.css";
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function CreationPage() {
+  const navigate = useNavigate();
   const [prenom, setPrenom] = useState("");
   const [nom, setNom] = useState("");
   const [email, setEmail] = useState("");
@@ -26,6 +28,7 @@ export default function CreationPage() {
 
       if (response.ok) {
         console.log("Utilisateur créé avec succès !");
+        navigate('/');
       } else {
         console.error("Échec de la création de l'utilisateur");
       }

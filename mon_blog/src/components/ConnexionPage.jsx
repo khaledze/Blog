@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import "./Log.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function ConnexionPage() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -23,6 +24,7 @@ export default function ConnexionPage() {
 
       if (response.ok) {
         console.log("Connexion réussie !");
+        navigate('/');
       } else {
         console.error("Échec de la connexion");
       }
@@ -60,7 +62,7 @@ export default function ConnexionPage() {
         </div>
       </div>
       
-      <button className="button-submit">Sign In</button>
+      <button className="button-submit" onClick={handleSignIn}>Sign In</button>
       <p className="p">
           Don't have an account? <Link to="/creation"><span className="span">Sign Up</span></Link>
         </p>
