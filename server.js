@@ -132,7 +132,62 @@ app.get('/utilisateurs/:id', async (req, res) => {
         res.status(500).send("Erreur interne du serveur");
     }
 });
+app.post('/utilisateurs', async (req, res) => {
+    const { email, password, nom, prenom } = req.body;
 
+    try {
+        const conn = await pool.getConnection();
+
+        // Vérification si l'e-mail existe déjà
+        const existingUser = await conn.query("SELECT id FROM utilisateur WHERE email = ?", [email]);
+
+        if (existingUser.length > 0) {
+            res.status(409).json({ error: "Adresse e-mail déjà utilisée" });
+        } else {
+            const hashedPassword = await bcrypt.hash(password, 10);
+
+            await conn.query("INSERT INTO utilisateur (email, mot_de_passe, nom, prenom) VALUES (?, ?, ?, ?)", [email, hashedPassword, nom, prenom]);
+            res.status(201).send("Utilisateur ajouté avec succès");
+        }
+
+        conn.release();
+    } catch (err) {
+        console.error("Erreur lors de l'ajout de l'utilisateur :", err);
+        res.status(500).json({ error: "Erreur interne du serveur", details: err.message });
+    }
+});
+
+app.post('/connexion', async (req, res) => {
+    const { email, password } = req.body;
+    let conn;
+    try {
+      conn = await pool.getConnection();
+  
+      const result = await conn.query("SELECT * FROM utilisateur WHERE email = ?", [email]);
+  
+      if (result.length === 0) {
+        res.status(401).send("Adresse e-mail ou mot de passe incorrect");
+        return;
+      }
+  
+      const utilisateur = result[0];
+      const motDePasseMatch = await bcrypt.compare(password, utilisateur.mot_de_passe);
+  
+      if (motDePasseMatch) {
+        res.status(200).send("Authentification réussie");
+      } else {
+        res.status(401).send("Adresse e-mail ou mot de passe incorrect");
+      }
+    } catch (err) {
+      console.error("Erreur lors de la vérification de l'authentification :", err);
+      res.status(500).send("Erreur interne du serveur");
+    } finally {
+      if (conn) {
+        conn.release();
+      }
+    }
+  });
+  
 
 app.listen(3001, () => {
     console.log('Serveur démarré'); 
