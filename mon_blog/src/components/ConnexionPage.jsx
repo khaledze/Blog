@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import "./Log.css";
+import { Link } from "react-router-dom";
 
 export default function ConnexionPage() {
   const [email, setEmail] = useState("");
@@ -58,12 +59,11 @@ export default function ConnexionPage() {
           />
         </div>
       </div>
-      <div className="flex-row">
-      </div>
-      <button className="button-submit" onClick={handleSignIn}>Sign In</button>
+      
+      <button className="button-submit">Sign In</button>
       <p className="p">
-        Don't have an account? <span className="span">Sign Up</span>
-      </p>
+          Don't have an account? <Link to="/creation"><span className="span">Sign Up</span></Link>
+        </p>
     </div>
     </div>
   );
