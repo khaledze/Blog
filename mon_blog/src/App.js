@@ -1,13 +1,20 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/Home';
-// import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-
+import ConnexionPage from './components/ConnexionPage';
+import CreationPage from './components/CreationPage';
 
 function App() {
   return (
-    <div className="App">
-      <Home />
-    </div>
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/connexion" element={<ConnexionPage />} />
+          <Route path="/creation" element={<CreationPage />} />
+        </Routes>
+      </div>
+    </Router>
   );
 }
 

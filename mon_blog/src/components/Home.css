@@ -1,0 +1,70 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-self: flex-start; /* Add this line */
+    background-color: #f0f0f0; /* Couleur claire */
+    padding: 20px;
+  }
+.header-image {
+    width: 200px;
+    height: auto;
+  }
+
+.buttons {
+    display: flex;
+    
+    gap: 10px;
+}
+
+
+.signup-button,
+.login-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.signup-button {
+    background-color: #007BFF;
+    color: white;
+}
+
+.-button {
+    background-color: #007BFF;
+    color: white;
+}
+
+.login-button {
+    background-color: #6C757D;
+    color: white;
+}
+
+.nav-options {
+    display: flex;
+    justify-content: space-around;
+    padding: 0;
+    gap:40px;
+    background-color: #f0f0f0;
+  }
+  
+  .nav-option {
+    position: relative;
+    padding: 20px;
+    cursor: pointer;
+  }
+  
+  .info {
+    position: absolute;
+    display: none;
+    width: 200px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+  }
+  
+  .nav-option:hover .info {
+    display: block;
+  }
+  
