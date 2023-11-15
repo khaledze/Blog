@@ -3,6 +3,7 @@ import "./Log.css";
 
 export default function ConnexionPage() {
   return (
+    <div className="login-page">
     <div className="form">
       <h2>Connexion</h2>
       <div className="flex-column">
@@ -32,6 +33,7 @@ export default function ConnexionPage() {
       <p className="p">
         Don't have an account? <span className="span">Sign Up</span>
       </p>
+    </div>
     </div>
   );
 }
