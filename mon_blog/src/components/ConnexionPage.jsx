@@ -1,5 +1,6 @@
 import React from "react";
 import "./Log.css";
+import { Link } from "react-router-dom";
 
 export default function ConnexionPage() {
   return (
@@ -22,17 +23,11 @@ export default function ConnexionPage() {
           />
         </div>
       </div>
-      <div className="flex-row">
-        <div>
-          <input type="checkbox" />
-          <label>Remember me </label>
-        </div>
-        <span className="span">Forgot password?</span>
-      </div>
+      
       <button className="button-submit">Sign In</button>
       <p className="p">
-        Don't have an account? <span className="span">Sign Up</span>
-      </p>
+          Don't have an account? <Link to="/creation"><span className="span">Sign Up</span></Link>
+        </p>
     </div>
     </div>
   );
