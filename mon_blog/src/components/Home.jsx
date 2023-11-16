@@ -8,11 +8,41 @@ import ArticleCard from './ArticleCard';
 export default function Home() {
     const [articles, setArticles] = useState([]);
     const [expandedArticleId, setExpandedArticleId] = useState(null);
-
-    const handleEditArticle = (updatedArticle) => {
+    const user = JSON.parse(localStorage.getItem('user')); 
+    
+    const handleEdit = (articleId, updatedArticle, onUpdateSuccess) => {
+      if (!user) {
+        console.log("L'utilisateur n'est pas connecté. Impossible de mettre à jour l'article.");
+        return;
+      }
+    
       console.log("Article mis à jour :", updatedArticle);
-  };
+      fetch(`http://localhost:3001/articles/${articleId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedArticle),
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error(`Échec de la mise à jour de l'article. Statut : ${response.status}`);
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log("Mise à jour réussie :", data);
+          if (onUpdateSuccess && typeof onUpdateSuccess === 'function') {
+            onUpdateSuccess(data);
+          }
+        })
+        .catch(error => {
+          console.error("Erreur lors de la mise à jour de l'article :", error.message);
+        });
+    };
   
+  
+
     useEffect(() => {
       
       fetch("http://localhost:3001/articles-details")
@@ -22,6 +52,11 @@ export default function Home() {
     }, []);
     
     const handleDeleteArticle = (articleId) => {
+      if (!user) {
+          console.log("L'utilisateur n'est pas connecté. Impossible de supprimer l'article.");
+          return;
+      }
+  
       fetch(`http://localhost:3001/articles/${articleId}`, {
           method: 'DELETE',
       })
@@ -33,6 +68,11 @@ export default function Home() {
           .catch(error => console.error("Erreur lors de la suppression de l'article :", error));
   };
     
+  const handleLogout = () => {
+    localStorage.removeItem('user');
+    window.location.reload();
+  };
+
   return (
     <div className="home-container">
       <header className="header">
@@ -45,17 +85,27 @@ export default function Home() {
         <div className="buttons">
           <Link to="/creation"><button className="signup-button">Créer un compte</button></Link>
           <Link to="/connexion"><button className="login-button">Se connecter</button></Link>
-          <Link to="/deconnexion"><button className="logout-button">Se déconnecter</button></Link>
+          <button className="logout-button" onClick={handleLogout}>Se déconnecter</button>
         </div>
       </header>
       <div className="articles-container">
         <h2>Derniers articles</h2>
         <div className="articles-grid">
-          {articles.map(article => (
-            <ArticleCard key={article.auteur_id} article={article} expandedArticleId={expandedArticleId} setExpandedArticleId={setExpandedArticleId}  onDelete={handleDeleteArticle } onEdit={handleEditArticle}/>
-          ))}
+        {articles.map(article => (
+      <ArticleCard
+        key={article.auteur_id}
+        article={article}
+        expandedArticleId={expandedArticleId}
+        setExpandedArticleId={setExpandedArticleId}
+        onDelete={handleDeleteArticle}
+        onEdit={handleEdit}
+        isUserLoggedIn={!!user}
+      />
+    ))}
         </div>
       </div>
     </div>
   );
 }
+
+

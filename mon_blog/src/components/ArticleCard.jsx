@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Icon from '../img/poubelle.png';
 import Icon2 from '../img/edit.png';
 
-function ArticleCard({ article, expandedArticleId, setExpandedArticleId, onDelete, onEdit }) {
+function ArticleCard({ article, expandedArticleId, setExpandedArticleId, onDelete, onEdit, isUserLoggedIn }) {
     const [editedArticle, setEditedArticle] = useState({ titre: article.titre, contenu: article.contenu });
     const [isEditing, setIsEditing] = useState(false);
     
@@ -10,7 +10,6 @@ function ArticleCard({ article, expandedArticleId, setExpandedArticleId, onDelet
         if (isEditing) {
             return;
         }
-    
         setExpandedArticleId(id === expandedArticleId ? null : id);
         setIsEditing(false);
     };
@@ -19,15 +18,21 @@ function ArticleCard({ article, expandedArticleId, setExpandedArticleId, onDelet
         event.stopPropagation();
         onDelete(article.id);
     };
-
-    const handleEditClick = (event) => {
+    const handleEdit = (articleId, editedData) => {
+        console.log(`Article édité avec succès. ID : ${articleId}`, editedData);
+      };
+      const handleEditClick = (event) => {
         event.stopPropagation();
-        setIsEditing(true);
-    };
+        if (isUserLoggedIn) {
+          setIsEditing(true);
+        } else {
+          console.log("Vous devez être connecté pour éditer un article.");
+        }
+      };
 
     const handleSaveClick = async (event) => {
         event.stopPropagation();
-
+    
         try {
             const response = await fetch(`http://localhost:3001/articles/${article.id}`, {
                 method: "PUT",
@@ -36,7 +41,7 @@ function ArticleCard({ article, expandedArticleId, setExpandedArticleId, onDelet
                 },
                 body: JSON.stringify(editedArticle),
             });
-
+    
             if (response.ok) {
                 console.log("Article mis à jour avec succès !");
                 onEdit(article.id, editedArticle);
