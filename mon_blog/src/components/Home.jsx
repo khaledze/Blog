@@ -8,7 +8,10 @@ import ArticleCard from './ArticleCard';
 export default function Home() {
     const [articles, setArticles] = useState([]);
     const [expandedArticleId, setExpandedArticleId] = useState(null);
-    
+
+    const handleEditArticle = (updatedArticle) => {
+      console.log("Article mis à jour :", updatedArticle);
+  };
   
     useEffect(() => {
       
@@ -24,7 +27,6 @@ export default function Home() {
       })
           .then(response => response.json())
           .then(() => {
-              // Mettez à jour la liste des articles après la suppression
               const updatedArticles = articles.filter(article => article.id !== articleId);
               setArticles(updatedArticles);
           })
@@ -50,7 +52,7 @@ export default function Home() {
         <h2>Derniers articles</h2>
         <div className="articles-grid">
           {articles.map(article => (
-            <ArticleCard key={article.auteur_id} article={article} expandedArticleId={expandedArticleId} setExpandedArticleId={setExpandedArticleId}  onDelete={handleDeleteArticle}/>
+            <ArticleCard key={article.auteur_id} article={article} expandedArticleId={expandedArticleId} setExpandedArticleId={setExpandedArticleId}  onDelete={handleDeleteArticle } onEdit={handleEditArticle}/>
           ))}
         </div>
       </div>
