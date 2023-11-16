@@ -17,7 +17,19 @@ export default function Home() {
         .then(data => setArticles(data))
         .catch(error => console.error("Erreur lors de la récupération des articles :", error));
     }, []);
-  
+    
+    const handleDeleteArticle = (articleId) => {
+      fetch(`http://localhost:3001/articles/${articleId}`, {
+          method: 'DELETE',
+      })
+          .then(response => response.json())
+          .then(() => {
+              // Mettez à jour la liste des articles après la suppression
+              const updatedArticles = articles.filter(article => article.id !== articleId);
+              setArticles(updatedArticles);
+          })
+          .catch(error => console.error("Erreur lors de la suppression de l'article :", error));
+  };
     
   return (
     <div className="home-container">
@@ -38,7 +50,7 @@ export default function Home() {
         <h2>Derniers articles</h2>
         <div className="articles-grid">
           {articles.map(article => (
-            <ArticleCard key={article.auteur_id} article={article} expandedArticleId={expandedArticleId} setExpandedArticleId={setExpandedArticleId} />
+            <ArticleCard key={article.auteur_id} article={article} expandedArticleId={expandedArticleId} setExpandedArticleId={setExpandedArticleId}  onDelete={handleDeleteArticle}/>
           ))}
         </div>
       </div>

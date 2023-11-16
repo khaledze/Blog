@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import "./Log.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function ConnexionPage() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -23,6 +24,7 @@ export default function ConnexionPage() {
 
       if (response.ok) {
         console.log("Connexion réussie !");
+        navigate('/');
       } else {
         console.error("Échec de la connexion");
       }
