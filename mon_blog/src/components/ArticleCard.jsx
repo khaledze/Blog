@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Icon from '../img/poubelle.png'
 
 
-function ArticleCard({ article, expandedArticleId, setExpandedArticleId, onDelete }) {
+function ArticleCard({ article, expandedArticleId, setExpandedArticleId, onDelete, isUserLoggedIn  }) {
     const handleExpandClick = (id) => {
         setExpandedArticleId(id === expandedArticleId ? null : id);
     };
@@ -21,9 +21,11 @@ function ArticleCard({ article, expandedArticleId, setExpandedArticleId, onDelet
                     <>
                         <p>{article.contenu}</p>
                         <p>Date de création : {article.date_creation}</p>
+                        {isUserLoggedIn && (
                         <button onClick={() => onDelete(article.id)}>
                             <img src={Icon} alt="Trash Icon" style={{ width: '20px', height: '20px' }} />
                         </button>
+                        )}
                     </>
                 )}
             </div>

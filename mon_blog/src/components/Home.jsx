@@ -8,6 +8,8 @@ import ArticleCard from './ArticleCard';
 export default function Home() {
     const [articles, setArticles] = useState([]);
     const [expandedArticleId, setExpandedArticleId] = useState(null);
+    const user = JSON.parse(localStorage.getItem('user')); // Récupérer les informations de l'utilisateur
+    console.log("Utilisateur récupéré du localStorage :", user);
     
   
     useEffect(() => {
@@ -31,6 +33,11 @@ export default function Home() {
           .catch(error => console.error("Erreur lors de la suppression de l'article :", error));
   };
     
+  const handleLogout = () => {
+    localStorage.removeItem('user'); // Supprimer les informations de l'utilisateur
+    window.location.reload(); // Recharger la page
+  };
+
   return (
     <div className="home-container">
       <header className="header">
@@ -43,15 +50,22 @@ export default function Home() {
         <div className="buttons">
           <Link to="/creation"><button className="signup-button">Créer un compte</button></Link>
           <Link to="/connexion"><button className="login-button">Se connecter</button></Link>
-          <Link to="/deconnexion"><button className="logout-button">Se déconnecter</button></Link>
+          <button className="logout-button" onClick={handleLogout}>Se déconnecter</button>
         </div>
       </header>
       <div className="articles-container">
         <h2>Derniers articles</h2>
         <div className="articles-grid">
-          {articles.map(article => (
-            <ArticleCard key={article.auteur_id} article={article} expandedArticleId={expandedArticleId} setExpandedArticleId={setExpandedArticleId}  onDelete={handleDeleteArticle}/>
-          ))}
+        {articles.map(article => (
+      <ArticleCard
+        key={article.auteur_id}
+        article={article}
+        expandedArticleId={expandedArticleId}
+        setExpandedArticleId={setExpandedArticleId}
+        onDelete={handleDeleteArticle}
+        isUserLoggedIn={!!user} // Passer l'information de connexion à ArticleCard
+      />
+    ))}
         </div>
       </div>
     </div>
