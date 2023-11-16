@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
+import Icon from '../img/poubelle.png'
 
-function ArticleCard({ article }) {
-    const [expandedArticleId, setExpandedArticleId] = useState(null);
 
+function ArticleCard({ article, expandedArticleId, setExpandedArticleId, onDelete }) {
     const handleExpandClick = (id) => {
         setExpandedArticleId(id === expandedArticleId ? null : id);
+    };
+
+    const handleDeleteClick = (event) => {
+        event.stopPropagation();
+        onDelete(article.id);
     };
 
     return (
@@ -15,6 +20,9 @@ function ArticleCard({ article }) {
                     <>
                         <p>{article.contenu}</p>
                         <p>Date de création : {article.date_creation}</p>
+                        <button onClick={() => onDelete(article.id)}>
+                            <img src={Icon} alt="Trash Icon" style={{ width: '20px', height: '20px' }} />
+                        </button>
                     </>
                 )}
             </div>

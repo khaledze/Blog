@@ -126,6 +126,20 @@ app.get('/articles-details/:id', async (req, res) => {
     }
 });
   
+app.delete('/articles/:id', async (req, res) => {
+    const articleId = req.params.id;
+
+    try {
+        const conn = await pool.getConnection();
+        await conn.query("DELETE FROM article WHERE id = ?", [articleId]);
+        conn.release();
+
+        res.status(200).json({ message: "Article supprimé avec succès" });
+    } catch (err) {
+        console.error("Erreur lors de la suppression de l'article :", err);
+        res.status(500).json({ error: "Erreur interne du serveur", details: err.message });
+    }
+});
 
 app.get('/utilisateurs', async (req, res) => {
     let conn;
